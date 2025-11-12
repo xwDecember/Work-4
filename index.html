@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивный калькулятор</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #2e2c2c;
+        }
+        .calculator {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #result {
+            min-height: 60px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+        }
+        .error {
+            color: #ff3860;
+            border-color: #ff3860;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Калькулятор</h1>
+        <div class="input-group">
+            <input type="text" id="num1" placeholder="Первое число">
+            <input type="text" id="num2" placeholder="Второе число">
+        </div>
+        <div class="buttons">
+            <button onclick="calculate('sum')">Сумма</button>
+            <button onclick="calculate('diff')">Разность</button>
+            <button onclick="calculate('mult')">Произведение</button>
+            <button onclick="calculate('div')">Деление</button>
+        </div>
+        <div id="result">Результат</div>
+    </div>
+
+    <script>
+        function calculate(operation) {
+            const num1Input = document.getElementById('num1');
+            const num2Input = document.getElementById('num2');
+            const resultDiv = document.getElementById('result');
+
+            // Убираем класс ошибки при новом расчете
+            resultDiv.classList.remove('error');
+            num1Input.style.borderColor = '#ddd';
+            num2Input.style.borderColor = '#ddd';
+
+            const num1 = parseFloat(num1Input.value);
+            const num2 = parseFloat(num2Input.value);
+
+            // Проверка на ввод чисел
+            if (isNaN(num1) || isNaN(num2)) {
+                resultDiv.textContent = 'Ошибка: Введите числа в оба поля!';
+                resultDiv.classList.add('error');
+                if (isNaN(num1)) num1Input.style.borderColor = '#ff3860';
+                if (isNaN(num2)) num2Input.style.borderColor = '#ff3860';
+                return;
+            }
+
+            let result;
+            switch (operation) {
+                case 'sum':
+                    result = num1 + num2;
+                    break;
+                case 'diff':
+                    result = num1 - num2;
+                    break;
+                case 'mult':
+                    result = num1 * num2;
+                    break;
+                case 'div':
+                    if (num2 === 0) {
+                        resultDiv.textContent = 'Ошибка: Деление на ноль!';
+                        resultDiv.classList.add('error');
+                        num2Input.style.borderColor = '#ff3860';
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+                default:
+                    result = 'Неизвестная операция';
+            }
+            resultDiv.textContent = result;
+        }
+    </script>
+</body>
+</html>
