@@ -3,102 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивный калькулятор</title>
+    <title>Калькулятор</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #2e2c2c;
+            padding: 20px;
         }
+
         .calculator {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 300px;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        input {
+            border-radius: 16px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            max-width: 400px;
+            border: 1px solid #e1e5e9;
         }
-        input:focus {
-            border-color: #4CAF50;
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .calculator-title {
+            color: #2c3e50;
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .calculator-subtitle {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .input-section {
+            margin-bottom: 25px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            flex: 1;
+        }
+
+        .input-label {
+            display: block;
+            color: #2c3e50;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            margin-left: 2px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fff;
+            color: #2c3e50;
+        }
+
+        .input-field:focus {
             outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
-        .buttons {
+
+        .input-field.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .operations-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        button {
-            padding: 12px;
+
+        .operation-btn {
+            padding: 14px 16px;
             border: none;
-            border-radius: 6px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
+            transition: all 0.3s ease;
+            background: #3498db;
+            color: white;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
         }
-        button:hover {
-            background-color: #45a049;
+
+        .operation-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
         }
-        button:active {
-            transform: scale(0.98);
+
+        .operation-btn:active {
+            transform: translateY(0);
         }
+
+        .result-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            margin-bottom: 10px;
+        }
+
+        .result-label {
+            display: block;
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
         #result {
-            min-height: 60px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
+            min-height: 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
             display: flex;
             align-items: center;
             justify-content: center;
             word-break: break-all;
+            transition: color 0.3s ease;
+            text-align: center;
         }
-        .error {
-            color: #ff3860;
-            border-color: #ff3860;
+
+        #result.error {
+            color: #e74c3c;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .calculator-footer {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.75rem;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 25px 20px;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .operations-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <h1>Калькулятор</h1>
-        <div class="input-group">
-            <input type="text" id="num1" placeholder="Первое число">
-            <input type="text" id="num2" placeholder="Второе число">
+        <div class="calculator-header">
+            <h1 class="calculator-title">Интерактивный калькулятор</h1>
+            
         </div>
-        <div class="buttons">
-            <button onclick="calculate('sum')">Сумма</button>
-            <button onclick="calculate('diff')">Разность</button>
-            <button onclick="calculate('mult')">Произведение</button>
-            <button onclick="calculate('div')">Деление</button>
+        
+        <div class="input-section">
+            <div class="input-row">
+                <div class="input-wrapper">
+                    <label class="input-label">Первое число</label>
+                    <input type="text" id="num1" class="input-field" placeholder="Введите число">
+                </div>
+                <div class="input-wrapper">
+                    <label class="input-label">Второе число</label>
+                    <input type="text" id="num2" class="input-field" placeholder="Введите число">
+                </div>
+            </div>
         </div>
-        <div id="result">Результат</div>
+
+        <div class="operations-grid">
+            <button class="operation-btn" onclick="calculate('sum')">Сумма</button>
+            <button class="operation-btn" onclick="calculate('diff')">Разность</button>
+            <button class="operation-btn" onclick="calculate('mult')">Произведение</button>
+            <button class="operation-btn" onclick="calculate('div')">Деление</button>
+        </div>
+
+        <div class="result-container">
+            <span class="result-label">Результат</span>
+            <div id="result">—</div>
+        </div>
+
+        
     </div>
 
     <script>
@@ -107,20 +229,20 @@
             const num2Input = document.getElementById('num2');
             const resultDiv = document.getElementById('result');
 
-            // Убираем класс ошибки при новом расчете
+            // Сброс стилей ошибок
             resultDiv.classList.remove('error');
-            num1Input.style.borderColor = '#ddd';
-            num2Input.style.borderColor = '#ddd';
+            num1Input.classList.remove('error');
+            num2Input.classList.remove('error');
 
             const num1 = parseFloat(num1Input.value);
             const num2 = parseFloat(num2Input.value);
 
-            // Проверка на ввод чисел
+            // Валидация ввода
             if (isNaN(num1) || isNaN(num2)) {
-                resultDiv.textContent = 'Ошибка: Введите числа в оба поля!';
+                resultDiv.textContent = 'Ошибка: введите корректные числа';
                 resultDiv.classList.add('error');
-                if (isNaN(num1)) num1Input.style.borderColor = '#ff3860';
-                if (isNaN(num2)) num2Input.style.borderColor = '#ff3860';
+                if (isNaN(num1)) num1Input.classList.add('error');
+                if (isNaN(num2)) num2Input.classList.add('error');
                 return;
             }
 
@@ -137,9 +259,9 @@
                     break;
                 case 'div':
                     if (num2 === 0) {
-                        resultDiv.textContent = 'Ошибка: Деление на ноль!';
+                        resultDiv.textContent = 'Ошибка: деление на ноль';
                         resultDiv.classList.add('error');
-                        num2Input.style.borderColor = '#ff3860';
+                        num2Input.classList.add('error');
                         return;
                     }
                     result = num1 / num2;
@@ -147,8 +269,22 @@
                 default:
                     result = 'Неизвестная операция';
             }
-            resultDiv.textContent = result;
+
+            // Форматирование результата
+            resultDiv.textContent = Number.isInteger(result) ? result : parseFloat(result.toFixed(6));
         }
+
+        // Обработчики для Enter
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.input-field');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculate('sum');
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
